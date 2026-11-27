@@ -9,13 +9,16 @@ Tiny floating facecam for macOS (~280 KB). Stays on top — even over fullscreen
 
 ## Install
 
+> [!IMPORTANT]
+> fcam isn't notarized by Apple, so macOS will block it ("fcam is damaged" / "can't be opened") until you run this **once** after installing:
+> ```sh
+> xattr -dr com.apple.quarantine /Applications/fcam.app
+> ```
+
 1. Download `fcam.zip` from [Releases](../../releases/latest) and unzip
 2. Move `fcam.app` to `/Applications`
-3. The app isn't notarized, so clear the download quarantine once:
-   ```sh
-   xattr -dr com.apple.quarantine /Applications/fcam.app
-   ```
-4. Open it and allow camera access
+3. Run the `xattr` command above in Terminal
+4. Open fcam and allow camera access
 
 Requires macOS 14+, Apple Silicon or Intel.
 
