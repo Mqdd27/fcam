@@ -22,7 +22,7 @@ Tiny floating facecam.
 
 Requires macOS 14+, Apple Silicon or Intel.
 
-## Build
+## Manual Build
 
 ```sh
 ./build.sh          # builds fcam.app
