@@ -35,3 +35,17 @@ iconutil -c icns build/AppIcon.iconset -o "$APP/Contents/Resources/AppIcon.icns"
 rm -rf build
 codesign --force -s - "$APP"
 echo "Built $APP $VERSION ($(du -sh "$APP" | cut -f1))"
+
+# `./build.sh dmg` → fcam.dmg with an Applications shortcut and the app icon as the volume icon.
+if [ "$1" = dmg ]; then
+  rm -rf dmg rw.dmg fcam.dmg
+  mkdir dmg && cp -R "$APP" dmg/ && ln -s /Applications dmg/Applications
+  cp "$APP/Contents/Resources/AppIcon.icns" dmg/.VolumeIcon.icns
+  hdiutil create -quiet -volname fcam -srcfolder dmg -format UDRW rw.dmg
+  MNT=$(hdiutil attach -nobrowse -noautoopen rw.dmg | awk -F'\t' '/\/Volumes\//{print $NF}')
+  SetFile -a C "$MNT"   # tell Finder the volume has a custom icon
+  hdiutil detach -quiet "$MNT"
+  hdiutil convert -quiet rw.dmg -format UDZO -o fcam.dmg
+  rm -rf dmg rw.dmg
+  echo "Built fcam.dmg ($(du -h fcam.dmg | cut -f1))"
+fi

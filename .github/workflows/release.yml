@@ -13,10 +13,7 @@ jobs:
       - uses: actions/checkout@v4
       - run: VERSION=${GITHUB_REF_NAME#v} ./build.sh
       - run: fcam.app/Contents/MacOS/fcam --selftest
-      - name: Build DMG (app + Applications shortcut for drag-install)
-        run: |
-          mkdir dmg && cp -R fcam.app dmg/ && ln -s /Applications dmg/Applications
-          hdiutil create -volname fcam -srcfolder dmg -format UDZO fcam.dmg
+      - run: ./build.sh dmg
       - run: gh release create "$GITHUB_REF_NAME" fcam.dmg --generate-notes
         env:
           GH_TOKEN: ${{ github.token }}
